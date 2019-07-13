@@ -1,86 +1,80 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Posts from "./components/Post";
+import Composer from "./components/Composer";
+import Header from './components/Header';
+// import { ReactComponent } from '*.svg';
+
+// import {name, email} from "./data/posts"
+// import Skfjlsdkj from "./data/posts";
+import posts from "./data/posts";
 
 
-// way of function definition
-// function sampleFunction(a){
-//   return {};
-// }
+class App extends React.Component {
 
-// const sampleFunction = function(){
+  constructor(props) {
+    super(props);
+    this.state = {
+      posts: posts
+    };
 
-//   return{};
-// };
+  }
 
-// const sampleFunction = (a) => {
-//   return {};
-// };
+  /*
+  // renderPostItems(posts) {
+    renderPostItems({_id, ...rest}) {
+    // return <Posts key={posts._id} _id={posts._id} text={posts.text} timestamp={posts.timestamp}/>
+    // console.log("_id,...rest####",_id,...rest);
+    return <Posts key={_id} {...rest}/>
+  }*/
 
-// const sampleFunction = (a) => ({});
+
+    renderPostItems = (posts) =>{
+      return <Posts key={posts.id} {...posts} onDelete={this.onDelete}/>
+    }
+
+  onSubmit = (text) => {
+    const {posts} = this.state ;
+    const _id = posts.length +  1;
+    const timestamp = String(new Date);
+    const post = {_id, text, timestamp}
+
+    posts.push(post);
+    this.setState({
+        posts
+      }, () => console.log("posts", posts)  )
+  }
+
+  onDelete = (_id) => {
+    const {posts} = this.state;
+    const filterdPosts = posts.filter((post) => {
+      return post._id !==_id;
+    })
+
+    this.setState({
+      posts:filterdPosts
+    });
+  }
+
+  render(){
+
+    const{posts} =this.state;
+    //  console.log("posts####",posts);
+    return(
+      <div className="container">
+        <Header/>
+        <div className="content">
+          <Composer  onSubmit = {this.onSubmit} />
+          <div className="posts">
+            {/* {this.state.posts.map(this.renderPostItems)} */}
+            {posts.map(this.renderPostItems)}
+          </div>
+        </div>
+      </div>
+      );
+    }
+  
+  }
 
 
-///es6
-///best practice
-//// className dakka gaman jsx bawa hoyagatha hakiya.
-//// <div />
-//// complnect should start with capital letter
-//// support file (language) should start with simple letter
-const App = () => (
-  <div className="App">
-  <header className="App-header">
-    <img src={logo} className="App-logo" alt="logo" />
-    <p>
-      Edit <code>src/App.js</code> and save to reload.
-    </p>
-    <a
-      className="App-link"
-      href="https://reactjs.org"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      Learn React
-    </a>
-  </header>
-</div>
-
-);
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
-///defauld
 export default App;
-
-
-///you caan use with multiple project, Eg: language
-
-// export default App;
-// export App2 ;
-// export App3 ;
-
-
-// -----
-// import { App3 } from "./App";
-// Or
-// import App, { App2, App3} from "..";
-// Or
-// import App as A from "../";
+      
