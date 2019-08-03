@@ -13,7 +13,7 @@ class Composer extends Component {
                 })
         }
 
-        
+
         render() {
                 const { onSubmit } = this.props;
                 const { text } = this.state;
